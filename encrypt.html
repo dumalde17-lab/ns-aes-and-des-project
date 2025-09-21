@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Encryption Page</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- CryptoJS library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Encrypt & Decrypt Text</h1>
+    </header>
+
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="encrypt.html">Encryption Page</a>
+    </nav>
+
+    <div class="container">
+        <h2>Choose Your Method</h2>
+        <label for="method">Encryption Method:</label>
+        <select id="method">
+            <option value="AES">AES</option>
+            <option value="DES">DES</option>
+        </select>
+
+        <label for="textInput">Enter Text:</label>
+        <textarea id="textInput" rows="4" placeholder="Type your text here..."></textarea>
+
+        <button onclick="encryptText()">Encrypt</button>
+        <button onclick="decryptText()">Decrypt</button>
+
+        <h3>Output:</h3>
+        <div class="output-box" id="output"></div>
+    </div>
+
+    <script>
+        const secretKey = "mySecretKey123"; // Simple key for demo
+
+        function encryptText() {
+            const method = document.getElementById("method").value;
+            const text = document.getElementById("textInput").value;
+            let encrypted = "";
+
+            if (method === "AES") {
+                encrypted = CryptoJS.AES.encrypt(text, secretKey).toString();
+            } else if (method === "DES") {
+                encrypted = CryptoJS.DES.encrypt(text, secretKey).toString();
+            }
+
+            document.getElementById("output").innerText = encrypted;
+        }
+
+        function decryptText() {
+            const method = document.getElementById("method").value;
+            const text = document.getElementById("textInput").value;
+            let decrypted = "";
+
+            try {
+                if (method === "AES") {
+                    decrypted = CryptoJS.AES.decrypt(text, secretKey).toString(CryptoJS.enc.Utf8);
+                } else if (method === "DES") {
+                    decrypted = CryptoJS.DES.decrypt(text, secretKey).toString(CryptoJS.enc.Utf8);
+                }
+            } catch (e) {
+                decrypted = "Invalid Encrypted Text!";
+            }
+
+            document.getElementById("output").innerText = decrypted || "Invalid Encrypted Text!";
+        }
+    </script>
+</body>
+</html>
